@@ -53,15 +53,16 @@ namespace Services.Services
 
         public async Task Update(Guid id, CreateCompanyViewModel obj)
         {
-            var company = await dbContext.Companies.FirstOrDefaultAsync(com => com.Id == id);
-            if (company is not null) 
+            
+            var result= await dbContext.Companies.AsNoTracking().FirstOrDefaultAsync(com => com.Id == id);
+            if (result != null) 
             {
-                company = Mapper.Map<Company>(obj);
-                company.Id = id;
+                var company = Mapper.Map<Company>(obj);
+                company.Id =id;
+                dbContext.Companies.Update(company);
+                await dbContext.SaveChangesAsync();
             }
 
-            dbContext.Companies.Update(company);
-            await dbContext.SaveChangesAsync();
 
         }
     }

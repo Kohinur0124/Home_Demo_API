@@ -56,7 +56,7 @@ namespace Services.Services
 
         public async Task Update(Guid id, CreateStaffViewModel obj)
         {
-            var staff = await dbContext.Staffs.FirstOrDefaultAsync(com => com.Id == id);
+            var staff = await dbContext.Staffs.AsNoTracking().FirstOrDefaultAsync(com => com.Id == id);
             if (staff is not null)
             {
                 staff = Mapper.Map<Staff>(obj);
